@@ -3,174 +3,109 @@ import {
   User, Cpu, Trophy, RotateCcw, Play, Info,
   Shield, Database, FileSpreadsheet, Bot, 
   CheckCircle, Network, BarChart3, Scale, 
-  ArrowLeftRight, ImageOff
+  Search, Lock, ArrowLeftRight, FileBarChart
 } from 'lucide-react';
 
-// --- CONFIGURATIE ---
-// INSTRUCTIE:
-// Zet je afbeeldingen in de map 'public/images'.
-// Geef ze de namen die hieronder bij 'imageUrl' staan.
-// Voorbeeld: Voor de kaart 'Databeleid' noem je het plaatje 'dg_beleid.png'.
+// --- CONFIGURATIE & IMAGES ---
+// Omdat we geen echte plaatjes hebben, mappen we elke set aan een passend Icoon.
+// Als je echte afbeeldingen hebt, kun je de 'Icon' property vervangen door een 'imageUrl'.
 
 const CARD_SETS = {
   datagovernance: {
     label: 'Data Governance',
     themeDescription: 'Het vaststellen van regels, beleid en verantwoordelijkheden voor databeheer.',
-    icon: Scale, 
+    icon: Scale, // Weegschaal voor beleid/balans
+    imageUrl: '/images/Compleetheid.png',
     setId: 'DG',
     items: [
-      { 
-        title: 'Databeleid & Standaarden', 
-        description: 'Definieert richtlijnen voor consistent databeheer en kwaliteitsnormen.',
-        imageUrl: '/images/dg_beleid.png' 
-      },
-      { 
-        title: 'Data Stewardship', 
-        description: 'Verantwoordelijkheid voor kwaliteit, veiligheid en juist gebruik van data.',
-        imageUrl: '/images/dg_stewardship.png'
-      },
-      { 
-        title: 'Compliance & Regelgeving', 
-        description: 'Voldoen aan wettelijke normen (AVG) en ethisch datagebruik.',
-        imageUrl: '/images/dg_compliance.png'
-      },
-      { 
-        title: 'Datastrategie & Eigenaarschap', 
-        description: 'Afstemmen van datamanagement op bedrijfsdoelen.',
-        imageUrl: '/images/dg_strategie.png'
-      }
+      { title: 'Databeleid & Standaarden', description: 'Definieert richtlijnen voor consistent databeheer en kwaliteitsnormen.' },
+      { title: 'Data Stewardship', description: 'Verantwoordelijkheid voor kwaliteit, veiligheid en juist gebruik van data.' },
+      { title: 'Compliance & Regelgeving', description: 'Voldoen aan wettelijke normen (AVG) en ethisch datagebruik.' },
+      { title: 'Datastrategie & Eigenaarschap', description: 'Afstemmen van datamanagement op bedrijfsdoelen.' }
     ]
   },
   dataarchitectuur: {
     label: 'Data Architectuur',
     themeDescription: 'De blauwdruk van hoe data gestructureerd en verplaatst wordt.',
-    icon: Network, 
+    icon: Network, // Netwerk structuur
     setId: 'DA',
     items: [
-      { 
-        title: 'Enterprise Data Modellen', 
-        description: 'Overkoepelend kader voor hoe data georganiseerd is binnen het bedrijf.',
-        imageUrl: '/images/da_modellen.png'
-      },
-      { 
-        title: 'Dataflow & Integratie', 
-        description: 'Hoe informatie tussen systemen wordt uitgewisseld.',
-        imageUrl: '/images/da_dataflow.png'
-      },
-      { 
-        title: 'Infrastructuur & Platforms', 
-        description: 'Hardware en software die dataopslag ondersteunen.',
-        imageUrl: '/images/da_infra.png'
-      },
-      { 
-        title: 'Schaalbaarheid & Flexibiliteit', 
-        description: 'Systemen die kunnen meegroeien met de organisatie.',
-        imageUrl: '/images/da_schaal.png'
-      }
+      { title: 'Enterprise Data Modellen', description: 'Overkoepelend kader voor hoe data georganiseerd is binnen het bedrijf.' },
+      { title: 'Dataflow & Integratie', description: 'Hoe informatie tussen systemen wordt uitgewisseld.' },
+      { title: 'Infrastructuur & Platforms', description: 'Hardware en software die dataopslag ondersteunen.' },
+      { title: 'Schaalbaarheid & Flexibiliteit', description: 'Systemen die kunnen meegroeien met de organisatie.' }
     ]
   },
   datamodellering: {
     label: 'Data Modelleren',
     themeDescription: 'Het visueel weergeven van datastructuren en relaties.',
-    icon: FileSpreadsheet,
+    icon: FileSpreadsheet, // Schema/Model
     setId: 'DM',
     items: [
-      { 
-        title: 'Conceptuele Modellen', 
-        description: 'Hoog-over weergave van data zonder technische details.',
-        imageUrl: '/images/dm_conceptueel.png'
-      },
-      { 
-        title: 'Logische Modellen', 
-        description: 'Gedetailleerde structuur van data, onafhankelijk van techniek.',
-        imageUrl: '/images/dm_logisch.png'
-      },
-      { 
-        title: 'Fysieke Modellen', 
-        description: 'Technische implementatie (tabellen, indexen) in de database.',
-        imageUrl: '/images/dm_fysiek.png'
-      },
-      { 
-        title: 'ERD Diagrammen', 
-        description: 'Schema\'s die relaties tussen data-entiteiten tonen.',
-        imageUrl: '/images/dm_erd.png'
-      }
+      { title: 'Conceptuele Modellen', description: 'Hoog-over weergave van data zonder technische details.' },
+      { title: 'Logische Modellen', description: 'Gedetailleerde structuur van data, onafhankelijk van techniek.' },
+      { title: 'Fysieke Modellen', description: 'Technische implementatie (tabellen, indexen) in de database.' },
+      { title: 'ERD Diagrammen', description: 'Schema\'s die relaties tussen data-entiteiten tonen.' }
     ]
   },
   aigeletterdheid: {
     label: 'AI Geletterdheid',
     themeDescription: 'Basisprincipes van Kunstmatige Intelligentie en hoe het werkt.',
-    icon: Bot, 
+    icon: Bot, // Robot voor AI
     setId: 'AI',
     items: [
-      { 
-        title: 'Fundament van AI', 
-        description: 'De geschiedenis en basisprincipes van kunstmatige intelligentie.',
-        imageUrl: '/images/ai_fundament.png'
-      },
-      { 
-        title: 'Machine Learning', 
-        description: 'Computers die leren van data en patronen herkennen.',
-        imageUrl: '/images/ai_ml.png'
-      },
-      { 
-        title: 'Ethiek in AI', 
-        description: 'Morele keuzes, fairness en vooroordelen in algoritmes.',
-        imageUrl: '/images/ai_ethiek.png'
-      },
-      { 
-        title: 'AI in Business', 
-        description: 'Toepassen van AI om zakelijke uitdagingen op te lossen.',
-        imageUrl: '/images/ai_business.png'
-      }
+      { title: 'Fundament van AI', description: 'De geschiedenis en basisprincipes van kunstmatige intelligentie.' },
+      { title: 'Machine Learning', description: 'Computers die leren van data en patronen herkennen.' },
+      { title: 'Ethiek in AI', description: 'Morele keuzes, fairness en vooroordelen in algoritmes.' },
+      { title: 'AI in Business', description: 'Toepassen van AI om zakelijke uitdagingen op te lossen.' }
     ]
   },
   datakwaliteit: { 
     label: 'Data Kwaliteit', 
     themeDescription: 'Waarborgen dat data nauwkeurig, volledig en consistent is.',
-    icon: CheckCircle, 
+    icon: CheckCircle, // Vinkje voor kwaliteit
     setId: 'DQ',
     items: [
-      { title: 'Nauwkeurigheid', description: 'Data is correct, vrij van fouten en betrouwbaar.', imageUrl: '/images/dq_nauwkeurig.png' },
-      { title: 'Compleetheid', description: 'Alle benodigde data is aanwezig; er ontbreekt niets.', imageUrl: '/images/dq_compleet.png' },
-      { title: 'Consistentie', description: 'Data is uniform over verschillende systemen heen.', imageUrl: '/images/dq_consistent.png' },
-      { title: 'Data Opschonen', description: 'Het opsporen en corrigeren van fouten in datasets.', imageUrl: '/images/dq_opschonen.png' }
+      {title: 'Nauwkeurigheid', description: 'Data is correct, vrij van fouten en betrouwbaar.'},
+      {title: 'Compleetheid', description: 'Alle benodigde data is aanwezig; er ontbreekt niets.'},
+      {title: 'Consistentie', description: 'Data is uniform over verschillende systemen heen.'},
+      {title: 'Data Opschonen', description: 'Het opsporen en corrigeren van fouten in datasets.'}
     ] 
   },
   databeveiliging: { 
     label: 'Security & Privacy', 
     themeDescription: 'Beschermen van data tegen ongeautoriseerde toegang.',
-    icon: Shield, 
+    icon: Shield, // Schild voor beveiliging
     setId: 'SP',
     items: [
-      { title: 'Toegangscontroles', description: 'Wie mag wat zien? Autorisaties en rollen.', imageUrl: '/images/sp_toegang.png' },
-      { title: 'Encryptie & Maskering', description: 'Data onleesbaar maken voor onbevoegden.', imageUrl: '/images/sp_encryptie.png' },
-      { title: 'Privacy Regelgeving', description: 'Wettelijke kaders zoals GDPR/AVG naleven.', imageUrl: '/images/sp_privacy.png' },
-      { title: 'Risicomanagement', description: 'Identificeren en beperken van datalek-risico\'s.', imageUrl: '/images/sp_risico.png' }
+      {title: 'Toegangscontroles', description: 'Wie mag wat zien? Autorisaties en rollen.'},
+      {title: 'Encryptie & Maskering', description: 'Data onleesbaar maken voor onbevoegden.'},
+      {title: 'Privacy Regelgeving', description: 'Wettelijke kaders zoals GDPR/AVG naleven.'},
+      {title: 'Risicomanagement', description: 'Identificeren en beperken van datalek-risico\'s.'}
     ] 
   },
   dataintegratie: { 
     label: 'Data Integratie', 
     themeDescription: 'Verbinden van databronnen zodat ze samenwerken.',
-    icon: ArrowLeftRight, 
+    icon: ArrowLeftRight, // Pijlen voor uitwisseling
     setId: 'DI',
     items: [
-      { title: 'ETL Processen', description: 'Extract, Transform, Load: data verplaatsen en opschonen.', imageUrl: '/images/di_etl.png' },
-      { title: 'API\'s & Interfaces', description: 'Systemen laten communiceren via standaarden.', imageUrl: '/images/di_api.png' },
-      { title: 'Datamigratie', description: 'Data verhuizen van het ene naar het andere systeem.', imageUrl: '/images/di_migratie.png' },
-      { title: 'Dataconsolidatie', description: 'Data samenvoegen tot één uniforme weergave.', imageUrl: '/images/di_consolidatie.png' }
+      {title: 'ETL Processen', description: 'Extract, Transform, Load: data verplaatsen en opschonen.'},
+      {title: 'API\'s & Interfaces', description: 'Systemen laten communiceren via standaarden.'},
+      {title: 'Datamigratie', description: 'Data verhuizen van het ene naar het andere systeem.'},
+      {title: 'Dataconsolidatie', description: 'Data samenvoegen tot één uniforme weergave.'}
     ] 
   },
   businessintelligence: { 
     label: 'Business Intelligence', 
     themeDescription: 'Omzetten van ruwe data in inzichten via dashboards.',
-    icon: BarChart3, 
+    icon: BarChart3, // Grafiek voor BI
     setId: 'BI',
     items: [
-      { title: 'Rapportage', description: 'Presenteren van data in leesbare vorm.', imageUrl: '/images/bi_rapportage.png' },
-      { title: 'Datavisualisatie', description: 'Data vereenvoudigen via grafieken en diagrammen.', imageUrl: '/images/bi_visualisatie.png' },
-      { title: 'Voorspellende analyses', description: 'Trends voorspellen op basis van historie.', imageUrl: '/images/bi_predictive.png' },
-      { title: 'Prestatie indicatoren', description: 'KPI\'s: meten hoe goed een proces presteert.', imageUrl: '/images/bi_kpi.png' }
+      {title: 'Rapportage', description: 'Presenteren van data in leesbare vorm.'},
+      {title: 'Datavisualisatie', description: 'Data vereenvoudigen via grafieken en diagrammen.'},
+      {title: 'Voorspellende analyses', description: 'Trends voorspellen op basis van historie.'},
+      {title: 'Prestatie indicatoren', description: 'KPI\'s: meten hoe goed een proces presteert.'}
     ] 
   },
 };
@@ -178,34 +113,15 @@ const CARD_SETS = {
 const ALL_CARDS = Object.entries(CARD_SETS).flatMap(([setKey, setData]) => 
   setData.items.map(itemObj => ({ 
     setKey, 
-    ...itemObj, // Dit bevat nu de unieke imageUrl van het item
+    ...itemObj, 
     label: setData.label, 
     Icon: setData.icon,
+    imageUrl: setData.imageUrl,
     setId: setData.setId
   }))
 );
 
-const RANDOM_NAMES = ['Sander', 'Vikash', 'Lisa', 'Menno', 'Graham', 'Iris', 'Niels', 'Emma'];
-
-// --- NIEUW COMPONENT: Slimme Afbeelding ---
-// Probeert plaatje te laden, valt terug op Icoon bij error.
-const SmartImage = ({ src, alt, Icon, className, iconClassName, iconSize = 24 }) => {
-  const [hasError, setHasError] = useState(false);
-
-  // Als er geen src is opgegeven, toon direct icoon
-  if (!src || hasError) {
-    return <Icon size={iconSize} className={iconClassName} />;
-  }
-
-  return (
-    <img 
-      src={src} 
-      alt={alt} 
-      className={className} 
-      onError={() => setHasError(true)} // Dit vangt de fout op als bestand mist
-    />
-  );
-};
+const RANDOM_NAMES = ['Sanne', 'Mark', 'Lisa', 'Tom', 'Kevin', 'Iris', 'Jasper', 'Emma'];
 
 export default function KwartetApp() {
   const [playerName, setPlayerName] = useState('');
@@ -253,7 +169,7 @@ export default function KwartetApp() {
     if (gameState === 'playing' && turn !== 0) {
       const timer = setTimeout(() => {
         playAiTurn();
-      }, 3000); 
+      }, 2000); 
       return () => clearTimeout(timer);
     }
   }, [turn, gameState, hands, players]);
@@ -369,12 +285,12 @@ export default function KwartetApp() {
       return {
         setKey,
         setLabel: setData.label,
+        // We use Bvolve colors, but keep a subtle border color for set distinction logic if needed
+        // Using a standard grey/orange theme for everything now.
         Icon: setData.icon,
-        // imageUrl: setData.imageUrl, // We gebruiken nu item-level images
         cards: setData.items.map(itemObj => ({
           title: itemObj.title,
           description: itemObj.description,
-          imageUrl: itemObj.imageUrl, // Specifieke kaart afbeelding!
           isOwned: ownedTitles.includes(itemObj.title)
         }))
       };
@@ -397,11 +313,7 @@ export default function KwartetApp() {
   };
 
   // --- COMPONENT: CARD (The visual look) ---
-  const renderCard = (cardObj, setKey, isOwned, Icon, turn, onClick) => {
-    // Haal de specifieke imageUrl op van deze kaart
-    const specificImageUrl = cardObj.imageUrl;
-
-    return (
+  const renderCard = (cardObj, setKey, isOwned, Icon, turn, onClick) => (
     <button
         key={cardObj.title}
         disabled={isOwned || turn !== 0}
@@ -415,52 +327,41 @@ export default function KwartetApp() {
         `}
     >
         {/* Card Header */}
-        <div className={`p-3 h-12 flex items-center justify-between border-b ${isOwned ? 'bg-orange-50 border-orange-100' : 'bg-slate-100 border-slate-200'}`}>
-            <span className={`text-[10px] uppercase font-bold tracking-wider truncate mr-1 ${isOwned ? 'text-orange-600' : 'text-slate-500'}`}>
-                {CARD_SETS[setKey].label}
+        <div className={`p-3 h-14 flex items-center justify-between border-b ${isOwned ? 'bg-orange-50 border-orange-100' : 'bg-slate-100 border-slate-200'}`}>
+            <span className={`text-[10px] uppercase font-bold tracking-wider ${isOwned ? 'text-orange-600' : 'text-slate-500'}`}>
+                {CARD_SETS[setKey].setId}
             </span>
              {/* Mini Icon in header */}
-             <Icon size={16} className={isOwned ? 'text-orange-500' : 'text-slate-400'} />
+            <Icon size={16} className={isOwned ? 'text-orange-500' : 'text-slate-400'} />
         </div>
         
         {/* Card Body */}
-        <div className="flex-1 p-3 flex flex-col relative overflow-hidden">
+        <div className="flex-1 p-3 flex flex-col relative">
             <h4 className={`font-bold text-sm mb-2 leading-tight ${isOwned ? 'text-slate-800' : 'text-slate-500'}`}>
                 {cardObj.title}
             </h4>
 
             {isOwned ? (
-                <div className="flex-1 flex flex-col">
-                    {/* Achtergrond image (Smart Fallback) - Alleen subtiel als plaatje er is */}
-                    {specificImageUrl && (
-                        <div className="absolute bottom-0 right-0 w-full h-24 opacity-10 pointer-events-none">
-                             <SmartImage src={specificImageUrl} Icon={Icon} className="w-full h-full object-contain" />
-                        </div>
-                    )}
-                    
+                <>
+                    {/* Visual: Big Icon in background opacity */}
+                    <div className="absolute right-[-10px] bottom-[-10px] opacity-5 pointer-events-none">
+                        <Icon size={120} />
+                    </div>
                     <p className="text-xs text-slate-600 leading-relaxed z-10 overflow-y-auto custom-scrollbar">
                         {cardObj.description}
                     </p>
-                </div>
+                </>
             ) : (
-                <div className="flex-1 flex flex-col items-center justify-center">
-                    {/* GROTE AFBEELDING MET FALLBACK */}
-                    <div className="flex items-center justify-center h-32 w-full mb-2">
-                        <SmartImage 
-                            src={specificImageUrl} 
-                            Icon={Icon} 
-                            className="w-full h-full object-contain opacity-20 grayscale" 
-                            iconClassName="text-slate-400 opacity-20"
-                            iconSize={48}
-                        />
-                    </div>
-                    <span className="text-[10px] text-center uppercase font-bold text-slate-400 mt-2">Ontbreekt</span>
+                <div className="flex-1 flex flex-col items-center justify-center opacity-40">
+                    {/* Visual: Ghost Icon */}
+                    <Icon size={48} className="text-slate-400 mb-2"/>
+                    <span className="text-[10px] text-center uppercase font-bold text-slate-400">Ontbreekt</span>
                 </div>
             )}
 
             {/* Hover Action Overlay */}
             {!isOwned && turn === 0 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white/90 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                <div className="absolute inset-0 flex items-center justify-center bg-white/90 opacity-0 group-hover:opacity-100 transition-opacity">
                     <span className="font-bold text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200 text-sm shadow-sm">
                         VRAAG KAART
                     </span>
@@ -468,7 +369,7 @@ export default function KwartetApp() {
             )}
         </div>
     </button>
-  )};
+  );
 
   if (gameState === 'setup') {
     return (
@@ -509,10 +410,7 @@ export default function KwartetApp() {
             style={{ left: hoveredSet.x, top: hoveredSet.y }}
           >
              <div className="p-3 border-b border-orange-100 bg-orange-50 flex items-center gap-2">
-                <div className="text-orange-500">
-                    {/* Toon hier het icoontje als symbool voor de hele set */}
-                    {React.createElement(CARD_SETS[hoveredSet.setKey].icon, {size: 16})}
-                </div>
+                {React.createElement(CARD_SETS[hoveredSet.setKey].icon, {size: 16, className: "text-orange-500"})}
                 <span className="font-bold text-sm text-slate-800">{CARD_SETS[hoveredSet.setKey].label}</span>
              </div>
              <div className="p-3">
