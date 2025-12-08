@@ -433,7 +433,7 @@ export default function KwartetApp() {
                 <div className="flex-1 flex flex-col">
                     {/* Achtergrond image (Smart Fallback) - Alleen subtiel als plaatje er is */}
                     {specificImageUrl && (
-                        <div className="absolute bottom-0 right-0 w-full h-24 opacity-10 pointer-events-none">
+                        <div className="absolute bottom-0 right-0 w-full h-24 opacity-80 pointer-events-none">
                              <SmartImage src={specificImageUrl} Icon={Icon} className="w-full h-full object-contain" />
                         </div>
                     )}
@@ -449,8 +449,8 @@ export default function KwartetApp() {
                         <SmartImage 
                             src={specificImageUrl} 
                             Icon={Icon} 
-                            className="w-full h-full object-contain opacity-20 grayscale" 
-                            iconClassName="text-slate-400 opacity-20"
+                            className="w-full h-full object-contain opacity-80" 
+                            iconClassName="text-slate-400 opacity-80"
                             iconSize={48}
                         />
                     </div>
